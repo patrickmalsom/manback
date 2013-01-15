@@ -2,7 +2,7 @@
 # ----------------------------------------------------------------------
 # Rotating backup utility
 # ----------------------------------------------------------------------
-#unset PATH ;  # avoid accidental use of $PATH
+
 # ------------- file names and locations -------------------------------
 MOUNT_DEVICE=2c8c806b-b73f-418d-888c-b6d342064890 ; #UUID label to be safe
 SNAPSHOT_MOUNT=/root/backup ; # Location to store the backups
@@ -28,7 +28,7 @@ fi ;
 
 # test to see if the directory exists
 if [ ! -d "$SNAPSHOT_MOUNT$BACKUP_DIR" ]; then
-  mkdir -p $SNAPSHOT_MOUNT$BACKUP_DIR
+  /bin/mkdir -p $SNAPSHOT_MOUNT$BACKUP_DIR
 fi
 
 # Delete the maximum valued snapshot, if it exists:
@@ -52,7 +52,7 @@ if [ -d $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.100 ] ; then
 fi;
 
 if [ ! -d $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.100 ] ; then
-  mkdir $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.100 ;
+  /bin/mkdir $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.100 ;
 fi;
 
 # Rsync from the system into the latest snapshot 
