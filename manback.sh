@@ -3,13 +3,7 @@
 # Rotating backup utility
 # ----------------------------------------------------------------------
 
-# ------------- file names and locations -------------------------------
-MOUNT_DEVICE=2c8c806b-b73f-418d-888c-b6d342064890 ; #UUID label to be safe
-SNAPSHOT_MOUNT=/root/backup ; # Location to store the backups
-BACKUP_DIR=/home/patrick/Desktop ; # Directory to be backed up
-SNAPSHOT_NAME=snapDesk ; # name of the snapshot directories
-EXCLUDES=/root/backup_exclude ; # location of exclude file
-TOTALSNAPS=7 ; # number of snapshots to keep
+source manback.conf
 
 # ------------- the script itself --------------------------------------
 # index for the backup starts at 100
