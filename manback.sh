@@ -2,14 +2,14 @@
 # ----------------------------------------------------------------------
 # Rotating backup utility
 # ----------------------------------------------------------------------
-unset PATH ;  # avoid accidental use of $PATH
+#unset PATH ;  # avoid accidental use of $PATH
 # ------------- file names and locations -------------------------------
 MOUNT_DEVICE=2c8c806b-b73f-418d-888c-b6d342064890 ; #UUID label to be safe
 SNAPSHOT_MOUNT=/root/backup ; # Location to store the backups
 BACKUP_DIR=/home/patrick/Desktop ; # Directory to be backed up
 SNAPSHOT_NAME=snapDesk ; # name of the snapshot directories
 EXCLUDES=/root/backup_exclude ; # location of exclude file
-TOTALSNAPS=56 ; # number of snapshots to keep
+TOTALSNAPS=7 ; # number of snapshots to keep
 
 # ------------- the script itself --------------------------------------
 # index for the backup starts at 100
@@ -28,17 +28,16 @@ fi ;
 
 # test to see if the directory exists
 if [ ! -d "$SNAPSHOT_MOUNT$BACKUP_DIR" ]; then
-    mkdir -p $SNAPSHOT_MOUNT$BACKUP_DIR;
+  mkdir -p $SNAPSHOT_MOUNT$BACKUP_DIR
 fi
 
-
 # Delete the maximum valued snapshot, if it exists:
-if [ -d $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.156 ] ; then
-/bin/rm -rf $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.156 ;
+if [ -d $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.$((100+$TOTALSNAPS)) ] ; then
+/bin/rm -rf $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.$((100+$TOTALSNAPS)) ;
 fi ;
 
 # Shift the middle snapshots back by one, if they exist
-for (( i = 156, j = 155; i > 101; i-- ,j--))
+for (( i = $((100+$TOTALSNAPS)) , j = $((99+$TOTALSNAPS)); i > 101; i-- ,j--))
 do
   if [ -d $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.$j ] ; then
   {
@@ -49,14 +48,17 @@ done
 
 # Make a hard-link-only (except for dirs) copy of latest snapshot
 if [ -d $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.100 ] ; then
-/bin/cp -al $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.100  $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.101 ;
+  /bin/cp -al $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.100  $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.101 ;
+fi;
+
+if [ ! -d $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.100 ] ; then
+  mkdir $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.100 ;
 fi;
 
 # Rsync from the system into the latest snapshot 
-/usr/bin/rsync -va --delete --delete-excluded --exclude-from="$EXCLUDES" $BACKUP_DIR/ $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.100 ;
+/usr/bin/rsync -va --delete --delete-excluded --exclude-from="$EXCLUDES" $BACKUP_DIR/ $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.100
 
-
-# Update the mtime of $SNAPSHOT_NAME.0 to reflect the snapshot time
+# Update the mtime of $SNAPSHOT_NAME.100 to reflect the snapshot time
 /bin/touch $SNAPSHOT_MOUNT$BACKUP_DIR/$SNAPSHOT_NAME.100 ;
 
 # Remount the RW snapshot mountpoint as readonly
