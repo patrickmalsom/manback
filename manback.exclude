@@ -1,7 +1,5 @@
-#!/bin/bash
 ## ==================================================
-## manback.conf: configuration file for manback backup utility
-## all fields must be filled for the script to work correctly
+## manback backup exclude file
 ## ==================================================
 
 # ----------------------------------------------------------------------- #
@@ -21,29 +19,10 @@
 #    along with manback.  If not, see <http://www.gnu.org/licenses/>.     #
 # ----------------------------------------------------------------------- #
 
-# This is the device that is used to store the backups. 
-# Please use the UUID label to be safe
-# to find uuid label use: ls -l /dev/disk/by-uuid
-MOUNT_DEVICE=2c8c806b-b73f-418d-888c-b6d342064890; 
+#do not backup the following directories and all subdirectories
+/home/patrick/.gvfs
+/home/patrick/.local/share/Trash
 
-# Location to store the backups
-# should be in the root directory if you want a secure backup
-SNAPSHOT_MOUNT=/root/backup; 
-
-# Directory to be backed up
-# All directories under the backup directory will be included
-# Exclude directories using the exclude file 
-BACKUP_DIR=/home/patrick/Desktop; 
-
-# location of exclude file
-# exclude file is used to exclude any directories that you wish not to be backed up
-# example can be found in README
-EXCLUDES=/root/backup_exclude; 
-
-# name of the snapshot directories
-SNAPSHOT_NAME=snapDesk; 
-
-# number of old snapshots to keep
-# not including the current snapshot
-TOTALSNAPS=7; 
-
+# do not backup files with these extensions
+**/*.temp
+**/*.dat
