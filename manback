@@ -22,7 +22,7 @@
 
 
 # configuration file. 
-source manback.conf
+source /root/manback/manback.conf
 
 # ------------- the script itself --------------------------------------
 # Index for the backup starts at 100
