@@ -3,12 +3,13 @@
 # Rotating backup utility
 # ----------------------------------------------------------------------
 
+# configuration file. 
 source manback.conf
 
 # ------------- the script itself --------------------------------------
-# index for the backup starts at 100
+# Index for the backup starts at 100
 
-# make sure this is running as root
+# Check for root privilages. Exit if false.
 if (( `/usr/bin/id -u` != 0 )) ; then { /bin/echo "Sorry, must be root.  Exiting..." ; exit ; } fi
 
 # Remount the RO mount point as RW; else abort
@@ -20,9 +21,13 @@ if (( $? )) ; then
 }
 fi ;
 
-# test to see if the directory exists
+# Create the backup directory if it does not exist
 if [ ! -d "$SNAPSHOT_MOUNT$BACKUP_DIR" ]; then
   /bin/mkdir -p $SNAPSHOT_MOUNT$BACKUP_DIR
+  if [ ! -d "$SNAPSHOT_MOUNT$BACKUP_DIR" ]; then
+    /bin/echo "could not create $SNAPSHOT_MOUNT$BACKUP_DIR. Exiting...";
+    exit;
+  fi;
 fi
 
 # Delete the maximum valued snapshot, if it exists:
