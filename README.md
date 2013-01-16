@@ -19,3 +19,9 @@ UUID=2c8c806b-b73f-418d-888c-b6d342064890   /root/backup   ext4   defaults,ro   
 
 3) Backups should happen without you requesting them, so use cron. A simple cron entry that backs up 4 times a day every day is:
 0 0,6,12,18 * * * /bin/bash /root/manback.sh > /dev/null
+
+===============
+Exclude file
+===============
+#rsync script exclude file
+**/.gvfs
