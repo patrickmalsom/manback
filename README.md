@@ -42,12 +42,13 @@ sudo /bin/bash /root/manback/manback
 An example exclude file. The default location is /root/manback/manback.exclude
 ```bash
 #rsync script exclude file
-**/.gvfs
-
 
 #do not backup the following directories and all subdirectories
-/home/patrick/.gvfs
-/home/patrick/.local/share/Trash
+**/.gvfs
+**/.local/share/Trash
+**/.mozilla
+**/.thunderbird
+**/.config/google-chrome
 
 # do not backup files with these extensions
 **/*.temp
